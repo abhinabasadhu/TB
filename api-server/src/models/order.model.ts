@@ -47,7 +47,7 @@ const orderSchema = new Schema<IOrder>(
           addOns: [
             {
               type: {
-                addOn: { type: Schema.Types.ObjectId, ref: "AddOn" },
+                addOn: { type: Schema.Types.ObjectId, ref: "Ingredient" },
                 quantity: { type: Number },
                 price: { type: Number },
               },

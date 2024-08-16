@@ -24,14 +24,15 @@ export async function getOrder(req: Request, res: Response) {
 
 // create a order
 export async function createOrder(req: Request, res: Response) {
-  if (!req.body.items || !Array.isArray(req.body.items)) {
-    return res.status(403).send("Missing required fields");
+  if (!req.body.items || !Array.isArray(req.body.items)|| !req.body.customerName) {
+      res.status(403).send("Missing required fields");
+      return;
   }
   const orderId = Math.floor(Math.random() * 10000);
   let items: IOrderItem[];
   let subItems: IOrderSubItem[];
   let total = 0;
-
+  let customerName = req.body.customerName;
   try {
     items = req.body.items;
   } catch (err) {
@@ -71,6 +72,7 @@ export async function createOrder(req: Request, res: Response) {
   }
 
   const order: any = await Order.create({
+    customerName,
     orderId,
     items,
     total,

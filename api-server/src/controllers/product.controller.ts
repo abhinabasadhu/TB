@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Product } from "../models/product.model";
+import { Origin, Product } from "../models/product.model";
 import { Types } from "mongoose";
 import { Ingredient } from "../models/ingredient.model";
 
@@ -22,7 +22,7 @@ export async function getProduct(req: Request, res: Response) {
 
 // create a product
 export async function createProduct(req: Request, res: Response) {
-    const { name, ingredients } = req.body;
+    const { name, origin, ingredients } = req.body;
 
     if (!ingredients || !Array.isArray(ingredients)) {
         return res.status(403).send("Missing Ingredients fields");
@@ -51,6 +51,7 @@ export async function createProduct(req: Request, res: Response) {
     const product = await Product.create(
         {
             name,
+            origin,
             addOns,
             price: total,
             characteristics,

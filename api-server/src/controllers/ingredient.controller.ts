@@ -66,4 +66,3 @@ export async function deleteIngredient(req: Request, res: Response) {
     res.send(ingredient);
 }
 
-// remove a ingredient from a product
