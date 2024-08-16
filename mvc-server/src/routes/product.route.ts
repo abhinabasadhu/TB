@@ -15,7 +15,7 @@ router.post("/", [createProduct]);
 router.delete("/:id", [deleteProduct]);
 router.get("/:id", [deleteProduct]);
 router.post("/:id", [editProduct]);
-router.post('/:productId/addons/:addOnId', addAddOnsToProduct);
-router.delete('/:productId/addons/:addOnId', removeAddOnsFromProduct);
+router.post('/:productId/addons/:ingredientId', addAddOnsToProduct);
+router.delete('/:productId/addons/:ingredientId', removeAddOnsFromProduct);
 
 export default router;

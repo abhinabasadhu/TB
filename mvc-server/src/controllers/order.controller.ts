@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product.model";
-import { AddOn } from "../models/addOn.model";
 import { IOrderSubItem, IOrderItem, Order } from "../models/order.model";
 import { Types } from "mongoose";
+import { Ingredient } from "../models/ingredient.model";
 
 // get all orders
 export async function getAllOrders(req: Request, res: Response) {
@@ -49,7 +49,7 @@ export async function createOrder(req: Request, res: Response) {
       }
 
       for (const addOn of subItems) {
-        const dbAddOn = await AddOn.findById(addOn.addOn);
+        const dbAddOn = await Ingredient.findById(addOn.addOn);
 
         if (!dbAddOn) {
           res.status(404).send("Order AddOn item not found");
@@ -78,8 +78,11 @@ export async function createOrder(req: Request, res: Response) {
 
   const newItems = [];
   const newSubItems = [];
+
   for (const item of order.items) {
+    
     const newItem = await Product.findById(item.coffee);
+    
     if (newItem) {
       newItems.push({
         item: newItem,
@@ -87,9 +90,13 @@ export async function createOrder(req: Request, res: Response) {
         price: item.price,
       });
     }
+    
     if (item.addOns.length) {
+      
       for (const addOn of item.addOns) {
-        const newSubItem = await AddOn.findById(item.coffee);
+        
+        const newSubItem = await Ingredient.findById(item.coffee);
+        
         if (newSubItem) {
           newSubItems.push({
             item: newSubItem,
@@ -99,14 +106,17 @@ export async function createOrder(req: Request, res: Response) {
         }
       }
     }
+    
     item.addOns = newSubItems;
   }
   order.items = newItems;
+  
   return res.status(201).send(order);
 }
 
-// edit a order
-export async function editOrder(req: Request, res: Response) {}
+// complete a order
+export async function completeOrder(req: Request, res: Response) {
+}
 
 // delete a order
 export async function deleteOrder(req: Request, res: Response) {

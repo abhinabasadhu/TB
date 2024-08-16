@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product.model";
-import { AddOn } from "../models/addOn.model";
 import { Types } from "mongoose";
+import { Ingredient } from "../models/ingredient.model";
 
 // list all products
 export async function getAllProducts(req: Request, res: Response) {
@@ -22,21 +22,39 @@ export async function getProduct(req: Request, res: Response) {
 
 // create a product
 export async function createProduct(req: Request, res: Response) {
-    const { name, characteristics, price, addOns } = req.body;
+    const { name, ingredients } = req.body;
 
-    if (!name || !characteristics || typeof price !== 'number') {
+    if (!ingredients || !Array.isArray(ingredients)) {
+        return res.status(403).send("Missing Ingredients fields");
+    }
+
+    if (!name) {
         res.status(400).send({
             message: "Please provide all required fields",
         });
         return;
     }
-
+    let characteristics = {};
+    let total = 0;
+    let addOns = []
+    for (const item of ingredients) {
+        const ingredient = await Ingredient.findById(item);
+        if (!ingredient) {
+            res.status(400).send({
+                message: "Ingrdient does not exits",
+            });
+            return;
+        }
+        characteristics[ingredient.name] = ingredient.quantity;
+        total = total + ingredient.price;
+    }
     const product = await Product.create(
         {
             name,
+            addOns,
+            price: total,
             characteristics,
-            price,
-            addOns
+            ingredients
         }
     );
     res.send(product);
@@ -57,7 +75,7 @@ export async function editProduct(req: Request, res: Response) {
         product.name = req.body.name;
     }
     if (req.body.characteristics) {
-        product.characteristics = req.body.description;
+        product.characteristics = req.body.characteristics;
     }
     if (req.body.price) {
         product.price = req.body.price;
@@ -82,10 +100,10 @@ export async function deleteProduct(req: Request, res: Response) {
 
 }
 
-// add addon to product
+// add ingredient to product addon for customisation
 export async function addAddOnsToProduct(req: Request, res: Response) {
-    const addOn = await AddOn.findById(req.params.addOnId);
-    if(!addOn) {
+    const ingredient = await Ingredient.findById(req.params.addOnId);
+    if(!ingredient) {
         res.status(404).send({ message: "AddOn not found" });
         return;
     }
@@ -96,16 +114,16 @@ export async function addAddOnsToProduct(req: Request, res: Response) {
         return
     }
 
-    product.addOns.push(addOn._id as Types.ObjectId);
+    product.addOns.push(ingredient._id as Types.ObjectId);
     await product.save();
     res.send(product);
 }
 
-// remove addon from product
+// remove ingredient to product addon for customisation
 export async function removeAddOnsFromProduct(req: Request, res: Response) {
     try {
         // Find the add-on by ID
-        const addOn = await AddOn.findById(req.params.addOnId);
+        const addOn = await Ingredient.findById(req.params.addOnId);
         if (!addOn) {
             return res.status(404).send({ message: "AddOn not found" });
         }

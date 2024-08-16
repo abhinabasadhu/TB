@@ -1,18 +1,18 @@
 import Router from "express-promise-router";
 import {
-  getAllAddOns,
-  createAddOn,
-  editAddOn,
-  deleteAddOn,
-  getAddOn
-} from "../controllers/addOn.controller";
+  getAllOrders,
+  getOrder,
+  createOrder,
+  deleteOrder,
+  completeOrder
+} from "../controllers/order.controller";
 
 const router = Router();
 
-router.get("/", [getAllAddOns]);
-router.post("/", [createAddOn]);
-router.delete("/:id", [deleteAddOn]);
-router.get("/:id", [getAddOn]);
-router.post("/:id", [editAddOn]);
+router.get("/", [getAllOrders]);
+router.post("/", [createOrder]);
+router.delete("/:id", [deleteOrder]);
+router.get("/:id", [getOrder]);
+router.post("/:id", [completeOrder]);
 
 export default router;

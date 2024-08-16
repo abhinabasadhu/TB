@@ -6,7 +6,7 @@ export enum OrderStatus {
 }
 
 export interface IOrderSubItem extends Document {
-  addOn: Schema.Types.ObjectId; // addon
+  addOn: Schema.Types.ObjectId; // addoningredient
   quantity: number; //Quantity
   price: number; // price
 }
