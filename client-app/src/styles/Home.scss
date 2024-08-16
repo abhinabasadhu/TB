@@ -1,0 +1,80 @@
+@import '../asset/styles/variable.scss';
+
+.home-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  
+    .card-container {
+      display: flex;
+      gap: 20px; /* Space between the cards */
+    }
+  
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      width: 200px; /* Card width */
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+  
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+  
+      h1 {
+        font-size: 1.5rem;
+        color: #333;
+      }
+    }
+  
+    .options {
+      background-color: $third-color;
+      color: #fff;
+    }
+  
+    .create-own {
+      background-color: $secondary-color;
+      color: #fff;
+    }
+    .ingredient-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px; /* Space between each ingredient option */
+        padding: 10px; /* Padding around each option */
+        border: 1px solid #ddd; /* Light border for separation */
+        border-radius: 8px; /* Rounded corners */
+        background-color: #f9f9f9; /* Light background for better readability */
+        transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition effects */
+        
+        &:hover {
+          background-color: #e9ecef; /* Slightly darker background on hover */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+        }
+      }
+      
+      .ingredient-option label {
+        display: flex;
+        align-items: center;
+        font-size: 1rem; /* Font size for better readability */
+        color: #333; /* Text color */
+      }
+      
+      .ingredient-option input[type="checkbox"] {
+        margin-right: 15px; /* Space between checkbox and text */
+        width: 20px; /* Size of the checkbox */
+        height: 20px; /* Size of the checkbox */
+        accent-color: $primary-color; /* Color of the checkbox when checked */
+      }
+      
+      .ingredient-option span {
+        display: inline-block;
+        margin-left: 10px; /* Space between the label text and quantity/price */
+      }
+}
+  

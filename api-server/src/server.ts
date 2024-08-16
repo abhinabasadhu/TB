@@ -3,6 +3,8 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import router from "./routes/index";
 import * as dotenv from 'dotenv';
+import cors from 'cors';
+
 dotenv.config();
 
 
@@ -10,6 +12,8 @@ const app = express();
 
 // Middleware to parse JSON bodies in incoming requests
 app.use(bodyParser.json());
+app.use(cors());
+
 app.use(router);
 
 // an asynchronous function to start the server and connect to MongoDB

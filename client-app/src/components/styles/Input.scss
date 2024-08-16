@@ -1,0 +1,22 @@
+/* Styling for the input container */
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px; /* Space between input fields */
+  }
+  
+  .input-field {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box; /* Include padding and border in the element’s total width and height */
+    transition: border-color 0.3s;
+  }
+  
+  .input-field:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default focus outline */
+  }
+  

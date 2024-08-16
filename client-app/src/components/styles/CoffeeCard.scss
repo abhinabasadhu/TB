@@ -1,0 +1,45 @@
+.coffee-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.coffee-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.coffee-card p {
+  margin: 8px 0;
+}
+
+.coffee-characteristics {
+  text-align: left;
+  margin: 16px 0;
+}
+
+.coffee-characteristics ul {
+  list-style: none;
+  padding: 0;
+}
+
+.coffee-characteristics li {
+  margin-bottom: 8px;
+}
+
+.quantity-container {
+  margin: 16px 0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-group button {
+  margin: 0 8px;
+}
