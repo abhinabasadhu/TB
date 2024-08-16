@@ -4,16 +4,19 @@ import { fetchAllCoffee, fetchIngredientData } from '../api/apiClient';
 import Dialog from '../components/common/Dailog';
 import CoffeeCard from '../components/specific/CoffeeCard';
 import Button from '../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const CoffeeOptionspage = () => {
+  const nav = useNavigate();
   const [data, setData] = useState([]);
   const [addOnData, setAddOnData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCoffee, setSelectedCoffee] = useState(null);
+  const [itemsForCheckoutBasket, setItemsForCheckoutBasket] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [customisedItems,  setCustomisedItems] = useState([]);
+  const [customisedItems, setCustomisedItems] = useState([]);
 
   useEffect(() => {
     const fetchDataFromApi = async () => {
@@ -40,7 +43,7 @@ const CoffeeOptionspage = () => {
     fetchDataFromApi();
     fetchCoffeeDataFromApi();
   }, []);
-  
+
   const handleCheckboxChange = (ingredientId) => {
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredientId)
@@ -52,8 +55,8 @@ const CoffeeOptionspage = () => {
   const handleSave = (id) => {
     const coffee = data.find(item => item._id === id);
     coffee.addOns = selectedIngredients;
-    
-    let ingredients  = []
+
+    let ingredients = []
 
     for (const id of selectedIngredients) {
       const item = addOnData.find(item => id === item._id);
@@ -69,11 +72,27 @@ const CoffeeOptionspage = () => {
     setDialogOpen(true);
   };
 
-  const handleAddToCheckout = (coffeeId, quantity) => {
-    console.log('Added to checkout:', { coffeeId, quantity });
-    // Add logic to handle adding to checkout
+  const handleAddToCheckout = (coffee, quantity) => {
+    // this is not working why ? 
+    // also when a coffee is added to the checkout only customised or the orinigal version of it is saved 
+    // this should not be the case customer should get the option to get both customised 
+    // as well as not customised version of it if they want it
+    coffee.quantity = quantity;
+    setItemsForCheckoutBasket((prevItems) =>
+      prevItems.includes(coffee)
+        ? prevItems.filter(item => item._id !== coffee._id)
+        : [...prevItems, coffee]
+    );
   };
-
+  useEffect(() => {
+    if (itemsForCheckoutBasket.length > 0) {
+      if (window.confirm('Your Coffee has been saved in Checkout. Do you want to Checkout?')) {
+        nav('/checkout', { state: { itemsForCheckoutBasket } });
+      } else {
+        console.log(itemsForCheckoutBasket);
+      }
+    }
+  }, [itemsForCheckoutBasket, nav]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -106,7 +125,7 @@ const CoffeeOptionspage = () => {
               </label>
             </div>
           ))}
-          <Button onClick={() => handleSave(selectedCoffee)}>Add Items</Button>       
+          <Button onClick={() => handleSave(selectedCoffee)}>Add Items</Button>
         </Dialog>
       )}
     </div>

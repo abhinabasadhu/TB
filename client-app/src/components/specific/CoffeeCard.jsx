@@ -22,7 +22,7 @@ const CoffeeCard = ({ coffee, customisedItems, onAddToCheckout, onCustomize }) =
   };
 
   const handleAddToCheckout = () => {
-    onAddToCheckout(coffee._id, quantity);
+    onAddToCheckout(coffee, quantity);
   };
 
   return (
