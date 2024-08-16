@@ -1,8 +1,7 @@
 import mongoose = require("mongoose");
 import express = require("express");
 import bodyParser = require("body-parser");
-import router from "./src/routes/index";
-
+import router from "./routes/index";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
