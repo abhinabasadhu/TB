@@ -22,9 +22,9 @@ export async function getProduct(req: Request, res: Response) {
 
 // create a product
 export async function createProduct(req: Request, res: Response) {
-    const { name, description, price, addOns } = req.body;
+    const { name, characteristics, price, addOns } = req.body;
 
-    if (!name || !description || typeof price !== 'number') {
+    if (!name || !characteristics || typeof price !== 'number') {
         res.status(400).send({
             message: "Please provide all required fields",
         });
@@ -34,7 +34,7 @@ export async function createProduct(req: Request, res: Response) {
     const product = await Product.create(
         {
             name,
-            description,
+            characteristics,
             price,
             addOns
         }
@@ -56,8 +56,8 @@ export async function editProduct(req: Request, res: Response) {
     if (req.body.name) {
         product.name = req.body.name;
     }
-    if (req.body.description) {
-        product.description = req.body.description;
+    if (req.body.characteristics) {
+        product.characteristics = req.body.description;
     }
     if (req.body.price) {
         product.price = req.body.price;
