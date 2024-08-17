@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Input from '../common/Input'; // Import your Input component
 import Button from '../common/Button'; // Import your Button component
 import '../styles/CoffeeCard.scss'; // Styling for the CoffeeCard component
@@ -18,13 +18,13 @@ const CoffeeCard = ({ coffee, onAddToCheckout, onCustomize }) => {
   return (
     <div className="coffee-card">
       <h2>{coffee.name}</h2>
-      <p>Price: £{(coffee.price + customizedPrice).toFixed(2)}</p>
+      <p>Price: £{(coffee.price).toFixed(2)}</p>
       <p>Origin: {coffee.origin}</p>
       <div className="coffee-characteristics">
         <h3>Characteristics:</h3>
         <ul>
           {Object.entries(coffee.characteristics).map(([key, value]) => (
-            <li>
+            <li key={key}>
               {key}: {value.amount} {value.unit}
             </li>
           ))}

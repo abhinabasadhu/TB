@@ -24,101 +24,103 @@ export async function getOrder(req: Request, res: Response) {
 
 // create a order
 export async function createOrder(req: Request, res: Response) {
-  if (!req.body.items || !Array.isArray(req.body.items)|| !req.body.customerName) {
-      res.status(403).send("Missing required fields");
-      return;
+  const { items, customerName } = req.body.data;
+
+  if (!items || !Array.isArray(items) || !customerName) {
+    return res.status(403).send("Missing required fields");
   }
+
   const orderId = Math.floor(Math.random() * 10000);
-  let items: IOrderItem[];
-  let subItems: IOrderSubItem[];
   let total = 0;
-  let customerName = req.body.customerName;
+  let formattedItems = [];
+
   try {
-    items = req.body.items;
-  } catch (err) {
-    res.status(403).send("Items in a invalid format");
-    return;
-  }
+    for (const item of items) {
+      const dbItem = await Product.findById(item._id);
 
-  for (const item of items) {
-    if (item.addOns.length) {
-      try {
-        subItems = item.addOns;
-      } catch (err) {
-        res.status(403).send("Items in a invalid format");
-        return;
+      if (!dbItem) {
+        return res.status(404).send(`Order item with id ${item._id} not found`);
       }
 
-      for (const addOn of subItems) {
-        const dbAddOn = await Ingredient.findById(addOn.addOn);
+      let formattedAddOns = [];
+      if (item.addOns && Array.isArray(item.addOns)) {
+        for (const addOnId of item.addOns) {
+          const dbAddOn = await Ingredient.findById(addOnId);
 
-        if (!dbAddOn) {
-          res.status(404).send("Order AddOn item not found");
-          return;
-        }
+          if (!dbAddOn) {
+            return res
+              .status(404)
+              .send(`Order add-on with id ${addOnId} not found`);
+          }
 
-        total = total + dbAddOn.price * item.quantity;
-      }
-    }
-
-    const dbItem = await Product.findById(item.coffee);
-
-    if (!dbItem) {
-      res.status(404).send("Order item not found");
-      return;
-    }
-
-    total = total + dbItem.price * item.quantity;
-  }
-
-  const order: any = await Order.create({
-    customerName,
-    orderId,
-    items,
-    total,
-  });
-
-  const newItems = [];
-  const newSubItems = [];
-
-  for (const item of order.items) {
-    
-    const newItem = await Product.findById(item.coffee);
-    
-    if (newItem) {
-      newItems.push({
-        item: newItem,
-        quantity: item.quantity,
-        price: item.price,
-      });
-    }
-    
-    if (item.addOns.length) {
-      
-      for (const addOn of item.addOns) {
-        
-        const newSubItem = await Ingredient.findById(item.coffee);
-        
-        if (newSubItem) {
-          newSubItems.push({
-            item: newSubItem,
-            quantity: addOn.quantity,
-            price: addOn.price,
+          total += dbAddOn.price * item.quantity;
+          formattedAddOns.push({
+            addOn: addOnId,
+            price: dbAddOn.price,
+            quantity: item.quantity,
           });
         }
       }
+
+      total += dbItem.price * item.quantity;
+      formattedItems.push({
+        coffee: dbItem._id,
+        quantity: item.quantity,
+        price: dbItem.price,
+        addOns: formattedAddOns,
+      });
     }
-    
-    item.addOns = newSubItems;
+
+    console.info(formattedItems);
+
+    const order = await Order.create({
+      customerName,
+      orderId,
+      items: formattedItems,
+      total,
+    });
+
+    const newItems = [];
+    const newSubItems = [];
+
+    for (const item of order.items) {
+      const newItem = await Product.findById(item.coffee);
+
+      if (newItem) {
+        newItems.push({
+          item: newItem,
+          quantity: item.quantity,
+          price: item.price,
+        });
+      }
+
+      if (item.addOns.length) {
+        for (const addOn of item.addOns) {
+          const newSubItem = await Ingredient.findById(item.coffee);
+
+          if (newSubItem) {
+            newSubItems.push({
+              item: newSubItem,
+              quantity: addOn.quantity,
+              price: addOn.price,
+            });
+          }
+        }
+      }
+
+      item.addOns = newSubItems;
+    }
+    order.items = newItems;
+    console.info("here 4");
+    return res.status(201).send(order);
+  } catch (e) {
+    console.error("Error processing order:", e);
+    return res.status(500).send("Internal server error");
   }
-  order.items = newItems;
-  
-  return res.status(201).send(order);
 }
 
 // complete a order
-export async function completeOrder(req: Request, res: Response) {
-}
+export async function completeOrder(req: Request, res: Response) {}
 
 // delete a order
 export async function deleteOrder(req: Request, res: Response) {

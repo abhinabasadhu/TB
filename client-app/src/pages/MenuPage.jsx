@@ -16,8 +16,9 @@ const CoffeeOptionspage = () => {
   const [itemsForCheckoutBasket, setItemsForCheckoutBasket] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [customisedItems, setCustomisedItems] = useState([]);
   const [customizedPrice, setCustomisedPrice] = useState(null);
+  const [proceedToCheckout, setProceedToCheckout] = useState(false);
+
 
   useEffect(() => {
     const fetchDataFromApi = async () => {
@@ -62,7 +63,6 @@ const CoffeeOptionspage = () => {
       const item = ingredientData.find(item => id === item._id);
       ingredients.push(item);
     }
-    setCustomisedItems(ingredients);
     setDialogOpen(false);
     handleAddToCheckout(coffee, 1, selectedIngredients)
     return;
@@ -89,13 +89,24 @@ const CoffeeOptionspage = () => {
     const uniqueKey = `${coffee._id}_${customizationString}`;
 
     // Clone the coffee object and add the quantity, customization, and unique key
-    const coffeeItem = {
-      ...coffee,
-      quantity,
-      addOns,
-      uniqueKey,
-      customizedPrice
-    };
+    let coffeeItem;
+    if (addOns.length > 0) {
+      coffeeItem = {
+        ...coffee,
+        quantity,
+        addOns,
+        uniqueKey,
+        customizedPrice
+      };
+    } else {
+      coffeeItem = {
+        ...coffee,
+        quantity,
+        addOns,
+        uniqueKey,
+      };
+    }
+
 
     setItemsForCheckoutBasket((prevItems) => {
       // Check if an item with the same unique key already exists
@@ -113,14 +124,17 @@ const CoffeeOptionspage = () => {
         return [...prevItems, coffeeItem];
       }
     });
+    setProceedToCheckout(true);
   };
+
   useEffect(() => {
-    if (itemsForCheckoutBasket.length > 0) {
+    if (proceedToCheckout) {
       if (window.confirm('Your Coffee has been saved in Checkout. Do you want to Checkout?')) {
         nav('/checkout', { state: { itemsForCheckoutBasket } });
-      };
+      }
+      setProceedToCheckout(false); // Reset flag
     }
-  }, [itemsForCheckoutBasket, nav]);
+  }, [proceedToCheckout, nav, itemsForCheckoutBasket]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
