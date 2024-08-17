@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const CoffeeOptionspage = () => {
   const nav = useNavigate();
   const [data, setData] = useState([]);
-  const [addOnData, setAddOnData] = useState([]);
+  const [ingredientData, setIngredientData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCoffee, setSelectedCoffee] = useState(null);
@@ -17,12 +17,13 @@ const CoffeeOptionspage = () => {
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [customisedItems, setCustomisedItems] = useState([]);
+  const [customizedPrice, setCustomisedPrice] = useState(null);
 
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
         const result = await fetchIngredientData();
-        setAddOnData(result);
+        setIngredientData(result);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -44,7 +45,7 @@ const CoffeeOptionspage = () => {
     fetchCoffeeDataFromApi();
   }, []);
 
-  const handleCheckboxChange = (ingredientId) => {
+  const handleCheckboxChange = (ingredientId) => {    
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredientId)
         ? prevSelected.filter(id => id !== ingredientId)
@@ -54,17 +55,17 @@ const CoffeeOptionspage = () => {
 
   const handleSave = (id) => {
     const coffee = data.find(item => item._id === id);
-    coffee.addOns = selectedIngredients;
 
     let ingredients = []
 
     for (const id of selectedIngredients) {
-      const item = addOnData.find(item => id === item._id);
+      const item = ingredientData.find(item => id === item._id);
       ingredients.push(item);
     }
     setCustomisedItems(ingredients);
     setDialogOpen(false);
-    return
+    handleAddToCheckout(coffee, 1, selectedIngredients)
+    return;
   }
 
   const handleCustomize = (coffeeId) => {
@@ -72,25 +73,52 @@ const CoffeeOptionspage = () => {
     setDialogOpen(true);
   };
 
-  const handleAddToCheckout = (coffee, quantity) => {
-    // this is not working why ? 
-    // also when a coffee is added to the checkout only customised or the orinigal version of it is saved 
-    // this should not be the case customer should get the option to get both customised 
-    // as well as not customised version of it if they want it
-    coffee.quantity = quantity;
-    setItemsForCheckoutBasket((prevItems) =>
-      prevItems.includes(coffee)
-        ? prevItems.filter(item => item._id !== coffee._id)
-        : [...prevItems, coffee]
-    );
+  useEffect(()=>{
+    // revise the price for extra items.
+    let total = 0;
+    for (const id of selectedIngredients) {
+        let item = ingredientData.find(item => item._id === id);
+        total = total + item.price
+    }
+    setCustomisedPrice(total.toFixed(2));
+  },[selectedIngredients.length])
+
+  const handleAddToCheckout = (coffee, quantity, addOns=[]) => {
+    // Create a unique key for each item based on its customization
+    const customizationString = JSON.stringify(addOns);
+    const uniqueKey = `${coffee._id}_${customizationString}`;
+
+    // Clone the coffee object and add the quantity, customization, and unique key
+    const coffeeItem = {
+      ...coffee,
+      quantity,
+      addOns,
+      uniqueKey,
+      customizedPrice
+    };
+
+    setItemsForCheckoutBasket((prevItems) => {
+      // Check if an item with the same unique key already exists
+      const exists = prevItems.some(item => item.uniqueKey === coffeeItem.uniqueKey);
+
+      if (exists) {
+        // If it exists, update the quantity of that specific item
+        return prevItems.map(item =>
+          item.uniqueKey === coffeeItem.uniqueKey
+            ? { ...item, quantity: item.quantity + quantity } // Update the quantity
+            : item
+        );
+      } else {
+        // If it doesn't exist, add the new item to the basket
+        return [...prevItems, coffeeItem];
+      }
+    });
   };
   useEffect(() => {
     if (itemsForCheckoutBasket.length > 0) {
       if (window.confirm('Your Coffee has been saved in Checkout. Do you want to Checkout?')) {
         nav('/checkout', { state: { itemsForCheckoutBasket } });
-      } else {
-        console.log(itemsForCheckoutBasket);
-      }
+      };
     }
   }, [itemsForCheckoutBasket, nav]);
 
@@ -104,7 +132,6 @@ const CoffeeOptionspage = () => {
           <CoffeeCard
             key={coffee._id}
             coffee={coffee}
-            customisedItems={customisedItems}
             onAddToCheckout={handleAddToCheckout}
             onCustomize={handleCustomize}
           />
@@ -113,7 +140,8 @@ const CoffeeOptionspage = () => {
       {selectedCoffee && (
         <Dialog isOpen={isDialogOpen} onClose={() => setDialogOpen(false)}>
           <h2>Customize Your Coffee</h2>
-          {addOnData.map(item => (
+          <h2>Extra Amount : £{customizedPrice}</h2>
+          {ingredientData.map(item => (
             <div key={item._id} className="ingredient-option">
               <label>
                 <input
@@ -125,7 +153,7 @@ const CoffeeOptionspage = () => {
               </label>
             </div>
           ))}
-          <Button onClick={() => handleSave(selectedCoffee)}>Add Items</Button>
+          <Button onClick={() => handleSave(selectedCoffee)}>Add Your Customized Coffee To Checkout</Button>
         </Dialog>
       )}
     </div>

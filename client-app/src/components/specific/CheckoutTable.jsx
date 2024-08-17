@@ -1,37 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import '../styles/CheckoutTable.scss';
 
-const CheckoutTableComponent = () => {
-  const tableData = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', age: 28 },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', age: 32 },
-    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', age: 45 },
-  ];
+const CheckoutTableComponent = ({ itemsForCheckoutBasket }) => {
+    const [totalAmount, setTotalAmount] = useState(0);
 
-  return (
-    <div>
-      <h2>Sample Table</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>ID</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Email</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Age</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((row) => (
-            <tr key={row.id}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.id}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.name}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.email}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.age}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+    useEffect(() => {
+        let total = 0;
+        for (const item of itemsForCheckoutBasket) {
+            total = total + item.price;
+            if (item.customizedPrice) {
+                total = total + parseFloat(item.customizedPrice);
+            }
+        }
+        setTotalAmount(parseFloat(total).toFixed(2));
+    }, [itemsForCheckoutBasket]);
+
+    return (
+        <div className='checkout-table'>
+            <h2>Checkout Basket</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th ingredientData>Name</th>
+                        <th ingredientData>Characteristics</th>
+                        <th ingredientData>AddOn</th>
+                        <th ingredientData>Quantity</th>
+                        <th ingredientData>Coffee Price</th>
+                        <th ingredientData>AddOn Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {itemsForCheckoutBasket.map((row) => (
+                        <tr key={row.id}>
+                            <td ingredientData>{row.name}</td>
+                            <td ingredientData>{Object.entries(row.characteristics).map(([key, value]) => (
+                                <li>
+                                    {key}: {value.amount} {value.unit}
+                                </li>
+                            ))}</td>
+                            <td ingredientData>{row.addOns.length > 0 ? 'Yes' : 'No'}</td>
+                            <td ingredientData>{row.quantity}</td>
+                            <td ingredientData>£{row.price}</td>
+                            <td ingredientData>£{row.customizedPrice}</td>
+                        </tr>
+                    ))}
+                    <tr>
+                        <td ingredientData><strong>Total: £{totalAmount}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default CheckoutTableComponent;

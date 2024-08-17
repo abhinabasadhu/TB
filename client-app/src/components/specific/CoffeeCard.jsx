@@ -3,18 +3,8 @@ import Input from '../common/Input'; // Import your Input component
 import Button from '../common/Button'; // Import your Button component
 import '../styles/CoffeeCard.scss'; // Styling for the CoffeeCard component
 
-const CoffeeCard = ({ coffee, customisedItems, onAddToCheckout, onCustomize }) => {
+const CoffeeCard = ({ coffee, onAddToCheckout, onCustomize }) => {
   const [quantity, setQuantity] = useState(1);
-  const [customizedPrice, setCustomisedPrice] = useState(null);
-
-  useEffect(()=>{
-    // revise the price for extra items.
-    let total = 0;
-    for (const item of customisedItems) {
-        total = total + item.price
-    }
-    setCustomisedPrice(total);
-  },[customisedItems.length])
 
 
   const handleQuantityChange = (event) => {
@@ -22,7 +12,7 @@ const CoffeeCard = ({ coffee, customisedItems, onAddToCheckout, onCustomize }) =
   };
 
   const handleAddToCheckout = () => {
-    onAddToCheckout(coffee, quantity);
+    onAddToCheckout(coffee, quantity, []);
   };
 
   return (
@@ -38,13 +28,6 @@ const CoffeeCard = ({ coffee, customisedItems, onAddToCheckout, onCustomize }) =
               {key}: {value.amount} {value.unit}
             </li>
           ))}
-          {customisedItems.length > 0 ?  
-            customisedItems.map(item => (
-                <li>
-                  {item.name}: {item.quantity.amount} {item.quantity.unit}
-                </li>
-              ))
-          : ''}
         </ul>
       </div>
       <div className="quantity-container">

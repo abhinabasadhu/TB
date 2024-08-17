@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import '../styles/Checkout.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import CheckoutTableComponent from '../components/specific/CheckoutTable';
 
 const CheckoutPage = () => {
-  const nav = useNavigate();
-  
+    const location = useLocation();
+    const { itemsForCheckoutBasket } = location.state || {};
   return (
     <div className="checkout-page">
+        <CheckoutTableComponent itemsForCheckoutBasket={itemsForCheckoutBasket}/>
     </div>
   );
 };
