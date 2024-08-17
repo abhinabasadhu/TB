@@ -13,9 +13,9 @@ export async function getIngredient(req: Request, res: Response) {
 }
 // create a ingredient
 export async function createIngredient(req: Request, res: Response) {
-    const {name, quantity, price} = req.body;
+    const {name, quantity, price} = req.body.data;
 
-    if (!name || !quantity.amount || !quantity.unit || typeof price !== 'number') {
+    if (!name || !quantity.amount || !quantity.unit || !price) {
         res.status(400).send({
             message: "Please provide all required fields",
         });
@@ -39,14 +39,16 @@ export async function editIngredient(req: Request, res: Response) {
         return;
     }
 
-    if (req.body.name) {
-        ingredient.name = req.body.name;
+    const {name, quantity, price} = req.body.data;
+
+    if (name) {
+        ingredient.name = name;
     }
-    if (req.body.quantity.amount && req.body.quantity.unit) {
-        ingredient.quantity = req.body.quantity;
+    if (quantity.amount && quantity.unit) {
+        ingredient.quantity = quantity;
     }
-    if (req.body.price) {
-        ingredient.price = req.body.price;
+    if (price) {
+        ingredient.price = price;
     }
     await ingredient.save();
     

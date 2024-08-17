@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Home.scss';
 import { useNavigate } from 'react-router-dom';
 import { fetchIngredientData, saveNewCoffee } from '../api/apiClient';
-import Dialog from '../components/common/Dailog';
+import Dialog from '../components/common/Dialog';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 
@@ -39,7 +39,7 @@ const HomePage = () => {
     );
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     // saves new coffee
     try {
       await saveNewCoffee(selectedIngredients, coffeeName);
@@ -48,7 +48,7 @@ const HomePage = () => {
     } catch (err) {
       alert(err)
     } finally {
-      setDialogOpen(false); 
+      setDialogOpen(false);
     }
   };
 
@@ -88,7 +88,7 @@ const HomePage = () => {
             type="name"
             value={coffeeName}
             onChange={(e) => setCoffeeName(e.target.value)}
-            />
+          />
         </div>
         <Button onClick={handleSave}>Create Coffee</Button>
       </Dialog>

@@ -2,8 +2,9 @@ import React from 'react';
 import '../styles/Input.scss';
 
 const Input = ({ type = 'text', value, onChange, placeholder, id, min, max, step, className, ...props }) => {
+  // generic dialog input
   return (
-    <div className={`input-container ${className}`}>
+    <div className={`input-container`}>
       <input
         type={type}
         id={id}

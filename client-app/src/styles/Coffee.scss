@@ -1,0 +1,14 @@
+@import '../asset/styles/variable.scss';
+
+.coffee-page {
+    padding: 2rem;
+    background-color: $background-color;
+    h1 {
+      color: $secondary-color;
+    }
+    .input-container  {
+        margin-top: 10px;
+        width: fit-content;
+    }
+}
+  

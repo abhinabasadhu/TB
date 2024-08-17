@@ -71,7 +71,6 @@ export async function createOrder(req: Request, res: Response) {
       });
     }
 
-    console.info(formattedItems);
 
     const order = await Order.create({
       customerName,
@@ -111,7 +110,6 @@ export async function createOrder(req: Request, res: Response) {
       item.addOns = newSubItems;
     }
     order.items = newItems;
-    console.info("here 4");
     return res.status(201).send(order);
   } catch (e) {
     console.error("Error processing order:", e);

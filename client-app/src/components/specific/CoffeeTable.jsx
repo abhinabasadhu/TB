@@ -1,31 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Button from '../common/Button';
 
-const CoffeeTableComponent = () => {
-  const tableData = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', age: 28 },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', age: 32 },
-    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', age: 45 },
-  ];
+const CoffeeTableComponent = ({ data }) => {
+  const [coffeeData, setCoffeeData] = useState(data || []);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+
+
+  console.log(coffeeData);
+  // name: string;
+  // characteristics: object;
+  // origin: Origin;
+  // ingredients: IIngredient[];
+  // price: number;
+  // addOns: Types.ObjectId[];
+  const handleAddCoffee = async () => {
+
+  };
+
 
   return (
-    <div>
-      <h2>Sample Table</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className='coffee-table-container'>
+      <h2>Coffees <Button onClick={() => handleAddCoffee}>Add New Coffee</Button></h2>
+      <table className='coffee-table'>
         <thead>
           <tr>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>ID</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Email</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Age</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row) => (
+          {coffeeData.map((row) => (
             <tr key={row.id}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.id}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.name}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.email}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.age}</td>
+              <td>{row.id}</td>
+              <td>{row.name}</td>
+              <td>{row.email}</td>
+              <td>{row.age}</td>
             </tr>
           ))}
         </tbody>

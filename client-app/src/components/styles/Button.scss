@@ -12,11 +12,11 @@
   transition: background-color 0.3s, transform 0.3s; /* Smooth transition effects */
 }
 .btn:hover {
-    background-color: #0056b3; /* Darker background on hover */
+    background-color: $secondary-color; /* Darker background on hover */
     transform: scale(1.05); /* Slightly enlarge button on hover */
 }
 
 .btn:focus {
     outline: none; /* Remove default focus outline */
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus ring */
+    box-shadow: 0 0 0 3px $fourth-color; /* Custom focus ring */
 }

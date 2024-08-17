@@ -1,13 +1,14 @@
 @import '../asset/styles/variable.scss';
 
-.customer-page {
+.ingredient-page {
     padding: 2rem;
     background-color: $background-color;
     h1 {
       color: $secondary-color;
     }
-    .card-container {
-        display: flex;
+    .input-container  {
+        margin-top: 10px;
+        width: fit-content;
     }
 }
   

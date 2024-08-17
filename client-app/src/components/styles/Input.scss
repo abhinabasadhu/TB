@@ -1,4 +1,5 @@
 
+@import "../../asset/styles/variable.scss";
 
 .input-container {
     display: flex;
@@ -17,7 +18,7 @@
   }
   
   .input-field:focus {
-    border-color: #007bff; /* Change border color on focus */
+    border-color: $fourth-color; /* Change border color on focus */
     outline: none; /* Remove default focus outline */
   }
   

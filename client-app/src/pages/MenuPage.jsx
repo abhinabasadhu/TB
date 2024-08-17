@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './../styles/Customer.scss';
+import './../styles/Menu.scss';
 import { fetchAllCoffee, fetchIngredientData } from '../api/apiClient';
-import Dialog from '../components/common/Dailog';
+import Dialog from '../components/common/Dialog';
 import CoffeeCard from '../components/specific/CoffeeCard';
 import Button from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
@@ -140,7 +140,7 @@ const CoffeeOptionspage = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="customer-page">
+    <div className="menu-page">
       <div className="card-container">
         {data.map(coffee => (
           <CoffeeCard

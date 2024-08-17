@@ -3,16 +3,15 @@ import '../styles/Admin.scss';
 import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
+  alert('Since this is a demo application, separate authentication for admins has not been implemented.');
   const nav = useNavigate();
-  const [isDialogOpen, setDialogOpen] = useState(false);
-
   return (
     <div className="admin-page">
       <div className="card-container">
-        <div className="card options" onClick={() => { nav('/menu') }}>
+        <div className="card options" onClick={() => { nav('/ingredient') }}>
           <h1>Add New Ingredient</h1>
         </div>
-        <div className="card create-own" onClick={() => { setDialogOpen(true) }}>
+        <div className="card create-own" onClick={() => { nav('/coffee') }}>
           <h1>Create New Coffee</h1>
         </div>
       </div>
