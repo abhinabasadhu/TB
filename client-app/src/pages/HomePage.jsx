@@ -5,7 +5,6 @@ import { fetchIngredientData, saveNewCoffee } from '../api/apiClient';
 import Dialog from '../components/common/Dialog';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
-
 const HomePage = () => {
   const nav = useNavigate();
 

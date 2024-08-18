@@ -3,21 +3,22 @@ import Button from '../common/Button';
 import Dialog from '../common/Dialog';
 import Input from '../common/Input';
 import { saveNewCoffee } from '../../api/apiClient';
+import '../styles/CoffeeTable.scss';
 
 const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
   const [openAddCoffeeDialog, setOpenAddCoffeeDialog] = useState(false);
   const [coffeeName, setCoffeeName] = useState('');
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
-  const handleCheckboxChange = (ingredientId) => {    
+  const handleCheckboxChange = (ingredientId) => {
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredientId)
         ? prevSelected.filter(id => id !== ingredientId)
         : [...prevSelected, ingredientId]
     );
   };
-  
-  const handleSaveCoffee = async() =>{ 
+
+  const handleSaveCoffee = async () => {
     if (!coffeeName) {
       alert('Your coffee needs a name');
       return;
@@ -34,26 +35,39 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
     }
   };
 
+  console.log(coffeeData)
+
   return (
     <div className='coffee-table-container'>
       <h2>
-        Coffees 
+        Coffees
         <Button onClick={() => setOpenAddCoffeeDialog(true)}>Add New Coffee</Button>
       </h2>
       <table className='coffee-table'>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Email</th>
-            <th>Age</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {coffeeData.map((row) => (
             <tr key={row.id}>
               <td>{row.name}</td>
-              <td>{row.email}</td>
-              <td>{row.age}</td>
+              <td>{(row.price.toFixed(2))}</td>
+              <td>{Object.entries(row.characteristics).map(([key, value]) => (
+                  <ul>
+                    <li>
+                      {key}: {value.amount} {value.unit}
+                    </li>
+                  </ul>
+                ))}
+              </td>
+              <td><Button>Edit</Button></td>
+              <td><Button>Delete</Button></td>
             </tr>
           ))}
         </tbody>
