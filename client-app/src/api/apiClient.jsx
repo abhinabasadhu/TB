@@ -18,12 +18,12 @@ export const fetchIngredientData = async () => {
   }
 };
 
-export const saveNewCoffee = async (selectedIngredients, coffeeName) => {
+export const saveNewCoffee = async (selectedIngredients, coffeeName, ori) => {
   try {
     const response = await apiClient.post('/product/', {
       ingredients: selectedIngredients,
       name: coffeeName,
-      origin: 'third_party'
+      origin: ori ? 'third_party' : 'system'
     });
     return response.data;
   } catch (error) {
@@ -74,6 +74,29 @@ export const editIngredient = async(id, data) => {
 export const deleteIngredient = async(id) => {
   try {
     const response = await apiClient.delete(`/ingredient/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+export const deleteCoffee = async(id) => {
+  try {
+    const response = await apiClient.delete(`/product/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+export const editCoffee = async(id, editCoffeeIngredients, editCoffeeName) => {
+  try {
+    const response = await apiClient.post(`/product/${id}`, { 
+      name: editCoffeeName,
+      ingredients: editCoffeeIngredients
+     });
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);

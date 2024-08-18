@@ -75,12 +75,29 @@ export async function editProduct(req: Request, res: Response) {
     if (req.body.name) {
         product.name = req.body.name;
     }
-    if (req.body.characteristics) {
-        product.characteristics = req.body.characteristics;
+    console.info('here');
+
+    if (req.body.ingredients) {
+        product.ingredients = req.body.ingredients;
+        let characteristics = {};
+        let total = 0;
+        for (const item of product.ingredients) {
+            const ingredient = await Ingredient.findById(item);
+            if (!ingredient) {
+                res.status(400).send({
+                    message: "Ingrdient does not exits",
+                });
+                return;
+            }
+            characteristics[ingredient.name] = ingredient.quantity;
+            total = total + ingredient.price;
+        }
+        product.characteristics = characteristics;
+        product.price = total;
+
     }
-    if (req.body.price) {
-        product.price = req.body.price;
-    }
+    console.info(product);
+
     await product.save();
     
     res.send(product);
@@ -98,7 +115,6 @@ export async function deleteProduct(req: Request, res: Response) {
     await product.deleteOne({ _id: req.params.id });
 
     res.send(product);
-
 }
 
 // add ingredient to product addon for customisation

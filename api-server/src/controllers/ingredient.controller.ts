@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Ingredient } from "../models/ingredient.model";
+import { Product } from "../models/product.model";
+import { ObjectId, Types } from "mongoose";
 
 // list all ingredients
 export async function getAllIngredients(req: Request, res: Response) {
@@ -59,8 +61,18 @@ export async function deleteIngredient(req: Request, res: Response) {
     const ingredient = await Ingredient.findById(req.params.id);
 
     if (!ingredient) {
-      res.status(404).send({ message: "Ingredient not found" });
-      return;
+        res.status(404).send({ message: "Ingredient not found" });
+        return;
+      }
+
+    const coffees = await Product.find();
+
+    for (const coffee of coffees) {
+        // todo: it is suppossed to be objectId here but it was not picking it up.
+        if (coffee.ingredients.includes(ingredient._id as any)) {
+            res.status(403).send({message: 'Can not be deleted ingredient is included in some coffees'})
+            return;        
+        }
     }
 
     await ingredient.deleteOne({ _id: req.params.id });;

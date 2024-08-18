@@ -45,7 +45,7 @@ const HomePage = () => {
     }
     // saves new coffee
     try {
-      await saveNewCoffee(selectedIngredients, coffeeName);
+      await saveNewCoffee(selectedIngredients, coffeeName, true);
       alert('Your coffee has been successfully created! You are now getting directed to the menu to select your coffee.')
       nav('/menu');
     } catch (err) {

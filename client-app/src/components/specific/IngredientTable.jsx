@@ -24,7 +24,7 @@ const IngredientTableComponent = ({ data }) => {
   const [editIngredientId, setEditIngredientId] = useState('');
 
 
-  const handleSaveIngredientData = async() => {
+  const handleSaveIngredientData = async () => {
     // save ingredient to db
     if (!ingredientAmount || !ingredientName || !ingredientUnit || !ingredientPrice) {
       alert('Please Enter All The Fields');
@@ -41,7 +41,7 @@ const IngredientTableComponent = ({ data }) => {
     try {
       const response = await saveIngredient(ingredientData);
       data.push(response);
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     } finally {
       setOpenAddIngredientDailog(false);
@@ -61,7 +61,7 @@ const IngredientTableComponent = ({ data }) => {
     setEditIngredientId(ingredient._id);
     setOpenEditIngredientDailog(true);
   };
-  const handleEditIngredient = async(id) => {
+  const handleEditIngredient = async (id) => {
     debugger;
     if (!editIngredientName || !editIngredientAmount || !editIngredientUnit || !editIngredientPrice) {
       alert('Please Enter All The Fields');
@@ -91,17 +91,20 @@ const IngredientTableComponent = ({ data }) => {
       setOpenEditIngredientDailog(false);
     };
   };
-  
+
   //delete
-  const handleDeleteIngredient = async(id) => {
-    try {
-      const response = await deleteIngredient(id);
-      const newData = data.filter((item) => item._id !== response._id);
-      setIngredientData(newData);
-    } catch(e) {
-      console.log(e)
-    } finally {
-      setOpenAddIngredientDailog(false);
+  const handleDeleteIngredient = async (id) => {
+    if (window.confirm('Are you sure you want to delete this ingredient ?')) {
+        try {
+          const response = await deleteIngredient(id);
+          const newData = data.filter((item) => item._id !== response._id);
+          setIngredientData(newData);
+        } catch (e) {
+          console.log(e);
+          alert(e.response.data.message);
+        } finally {
+          setOpenAddIngredientDailog(false);
+        }
     }
   };
 
@@ -137,18 +140,18 @@ const IngredientTableComponent = ({ data }) => {
       </table>
       <Dialog isOpen={openAddIngredientDailog} onClose={() => setOpenAddIngredientDailog(false)}>
         <h2>Add New Ingredient</h2>
-        <Input type="text" placeholder="Name" value={ingredientName} onChange={(e) => setIngredientName(e.target.value)}/>
-        <Input type="number" min={0} placeholder="Amount" value={ingredientAmount} onChange={(e) => setIngredientAmount(e.target.value)}/>
-        <Input type="text" placeholder="Unit To Measure" value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}/>
-        <Input type="number" min={0} placeholder="Price" value={ingredientPrice} onChange={(e) => setIngredientPrice(e.target.value)}/>
+        <Input type="text" placeholder="Name" value={ingredientName} onChange={(e) => setIngredientName(e.target.value)} />
+        <Input type="number" min={0} placeholder="Amount" value={ingredientAmount} onChange={(e) => setIngredientAmount(e.target.value)} />
+        <Input type="text" placeholder="Unit To Measure" value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)} />
+        <Input type="number" min={0} placeholder="Price" value={ingredientPrice} onChange={(e) => setIngredientPrice(e.target.value)} />
         <Button onClick={handleSaveIngredientData}>Save</Button>
       </Dialog>
       <Dialog isOpen={openEditIngredientDailog} onClose={() => setOpenEditIngredientDailog(false)}>
         <h2>Edit Ingredient</h2>
-        <Input type="text" placeholder="Name" value={editIngredientName} onChange={(e) => setEditIngredientName(e.target.value)}/>
-        <Input type="number" min={0} placeholder="Amount" value={editIngredientAmount} onChange={(e) => setEditIngredientAmount(e.target.value)}/>
-        <Input type="text" placeholder="Unit To Measure" value={editIngredientUnit} onChange={(e) => setEditIngredientUnit(e.target.value)}/>
-        <Input type="number" min={0} placeholder="Price" value={editIngredientPrice} onChange={(e) => setEditIngredientPrice(e.target.value)}/>
+        <Input type="text" placeholder="Name" value={editIngredientName} onChange={(e) => setEditIngredientName(e.target.value)} />
+        <Input type="number" min={0} placeholder="Amount" value={editIngredientAmount} onChange={(e) => setEditIngredientAmount(e.target.value)} />
+        <Input type="text" placeholder="Unit To Measure" value={editIngredientUnit} onChange={(e) => setEditIngredientUnit(e.target.value)} />
+        <Input type="number" min={0} placeholder="Price" value={editIngredientPrice} onChange={(e) => setEditIngredientPrice(e.target.value)} />
         <Button onClick={() => handleEditIngredient(editIngredientId)}>Save Changes</Button>
       </Dialog>
     </div>

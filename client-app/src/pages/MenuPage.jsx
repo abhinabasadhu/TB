@@ -156,7 +156,7 @@ const CoffeeOptionspage = () => {
           <h2>Customize Your Coffee</h2>
           <h2>Extra Amount : £{customizedPrice}</h2>
           {ingredientData.map(item => (
-            <div key={item._id} className="ingredient-option">
+            <div key={item._id}>
               <label>
                 <input
                   type="checkbox"
