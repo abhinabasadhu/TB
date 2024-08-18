@@ -40,6 +40,10 @@ const HomePage = () => {
   };
 
   const handleSave = async () => {
+    if (!coffeeName) {
+      alert('Your coffee needs a name');
+      return;
+    }
     // saves new coffee
     try {
       await saveNewCoffee(selectedIngredients, coffeeName);
