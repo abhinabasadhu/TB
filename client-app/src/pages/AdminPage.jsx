@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Admin.scss';
 import { useNavigate } from 'react-router-dom';
 
+// Admin Page
 const AdminPage = () => {
   alert('Since this is a demo application, separate authentication for admins has not been implemented.');
   const nav = useNavigate();

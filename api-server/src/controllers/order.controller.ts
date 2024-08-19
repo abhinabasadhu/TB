@@ -23,7 +23,7 @@ export async function getOrder(req: Request, res: Response) {
 
 // create a order
 export async function createOrder(req: Request, res: Response) {
-  const { items, customerName } = req.body.data;
+  const { items, customerName } = req.body;
 
   if (!items || !Array.isArray(items) || !customerName) {
     return res.status(403).send("Missing required fields");

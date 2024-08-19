@@ -4,14 +4,17 @@ import Button from '../common/Button'; // Import your Button component
 import '../styles/CoffeeCard.scss'; // Styling for the CoffeeCard component
 
 const CoffeeCard = ({ coffee, onAddToCheckout, onCustomize }) => {
+  // Card component to display each coffee 
+
   const [quantity, setQuantity] = useState(1);
 
 
   const handleQuantityChange = (event) => {
-    setQuantity(Number(event.target.value)); // Convert input value to number
+    setQuantity(Number(event.target.value));
   };
 
   const handleAddToCheckout = () => {
+    // triggers the function add to checkout in parent component
     onAddToCheckout(coffee, quantity, []);
   };
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchIngredientData } from '../api/apiClient';
 import IngredientTableComponent from '../components/specific/IngredientTable';
 
+// Admin Ingreidents Page
 const IngredientPage = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);

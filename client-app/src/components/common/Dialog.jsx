@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/Dailog.scss';
 
 const Dialog = ({ isOpen, onClose, children }) => {
+  // generic dialog component
   if (!isOpen) return null;
 
   return (

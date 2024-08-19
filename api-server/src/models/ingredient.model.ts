@@ -7,7 +7,7 @@ export interface IIngredient extends Document {
   price: number;
 }
 
-// Ingredient Schema to define customizable parts of coffee
+// Ingredient Schema to create a coffee
 const ingredientSchema = new Schema(
   {
     name: { type: String, required: true },

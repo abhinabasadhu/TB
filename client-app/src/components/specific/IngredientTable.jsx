@@ -5,27 +5,30 @@ import Dialog from '../common/Dialog';
 import Input from '../common/Input';
 import { deleteIngredient, editIngredient, saveIngredient } from '../../api/apiClient';
 
+// customised component to render the ingredients data in a table and takes ingredients data as a prop
 const IngredientTableComponent = ({ data }) => {
 
   const [ingredientData, setIngredientData] = useState(data);
 
+  // state to render the dialogs when required
   const [openAddIngredientDailog, setOpenAddIngredientDailog] = useState(false);
   const [openEditIngredientDailog, setOpenEditIngredientDailog] = useState(false);
-
+  
+  // captures values on new creation
   const [ingredientName, setIngredientName] = useState('');
   const [ingredientAmount, setIngredientAmount] = useState('');
   const [ingredientUnit, setIngredientUnit] = useState('');
   const [ingredientPrice, setIngredientPrice] = useState('');
 
+  // captures the edit values
   const [editIngredientName, setEditIngredientName] = useState('');
   const [editIngredientAmount, setEditIngredientAmount] = useState('');
   const [editIngredientUnit, setEditIngredientUnit] = useState('');
   const [editIngredientPrice, setEditIngredientPrice] = useState('');
   const [editIngredientId, setEditIngredientId] = useState('');
 
-
+  // save ingredient to db
   const handleSaveIngredientData = async () => {
-    // save ingredient to db
     if (!ingredientAmount || !ingredientName || !ingredientUnit || !ingredientPrice) {
       alert('Please Enter All The Fields');
       return;
@@ -51,7 +54,7 @@ const IngredientTableComponent = ({ data }) => {
       setIngredientPrice('');
     }
   };
-  // edit
+  // opens the edit dialog with prefilling the data which will be edited
   const handleOpenEditDailog = (id) => {
     const ingredient = ingredientData.find(item => item._id === id);
     setEditIngredientName(ingredient.name);
@@ -61,6 +64,8 @@ const IngredientTableComponent = ({ data }) => {
     setEditIngredientId(ingredient._id);
     setOpenEditIngredientDailog(true);
   };
+
+  // api call handler to save the edited data to the db
   const handleEditIngredient = async (id) => {
     debugger;
     if (!editIngredientName || !editIngredientAmount || !editIngredientUnit || !editIngredientPrice) {
@@ -92,7 +97,7 @@ const IngredientTableComponent = ({ data }) => {
     };
   };
 
-  //delete
+  // delete handler to delete an ingredient
   const handleDeleteIngredient = async (id) => {
     if (window.confirm('Are you sure you want to delete this ingredient ?')) {
         try {

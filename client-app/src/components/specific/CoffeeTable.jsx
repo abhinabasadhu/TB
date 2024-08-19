@@ -5,7 +5,9 @@ import Input from '../common/Input';
 import { deleteCoffee, editCoffee, saveNewCoffee } from '../../api/apiClient';
 import '../styles/CoffeeTable.scss';
 
+// customised component to render coffee data in a table taking the two props of coffeeData and ingredients
 const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
+
   const [openAddCoffeeDialog, setOpenAddCoffeeDialog] = useState(false);
   const [openEditCoffeeDialog, setOpenEditCoffeeDialog] = useState(false);
 
@@ -18,6 +20,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
 
   const [editCoffeeName, setEditCoffeeName] = useState('');
 
+  // On click on the checkout push the ingredient id to the list of selectedIngredients or to editCoffeeIngredients
   const handleCheckboxChange = (ingredientId, isEditCoffee) => {
     if (isEditCoffee) {
       setEditCoffeeIngredients((prevSelected) =>
@@ -35,8 +38,8 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
     };
   };
 
+  // handler does the api call to save new coffee
   const handleSaveCoffee = async () => {
-    // saves new coffee
     if (!coffeeName) {
       alert('Coffee needs a name');
       return;
@@ -54,6 +57,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
     }
   };
 
+  // opens the edit dialog and set the original values into place so that user knows what they are editing to.
   const handleEditCoffeeDialog = (key) => {
     const coffee = coffeeData.find(item => item._id === key);
 
@@ -63,7 +67,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
     setOpenEditCoffeeDialog(true);
   };
 
-
+  // edit coffee handler to do the api call and change the information
   const handleEditCoffee = async (id) => {
     try {
       const response = await editCoffee(id, editCoffeeIngredients, editCoffeeName);
@@ -81,6 +85,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
     }
   };
 
+  // delete handler to do the api call and delete a coffee.
   const handleDeleteCoffee = async (key) => {
     if (window.confirm('Are you sure you want to delete this coffee ?')) {
       try {
@@ -142,7 +147,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
             </label>
           </div>
         ))}
-        <div>
+        <div className='coffee-name'>
           <label>Name Your Coffee:</label>
           <Input
             id="Name"
@@ -168,7 +173,8 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
           </div>
         ))
         }
-        <div>
+        <div className='coffee-name'>
+          <lable>Change the Name</lable>
           <Input type="text" placeholder="Name" value={editCoffeeName} onChange={(e) => setEditCoffeeName(e.target.value)} />
         </div>
         <Button onClick={() => handleEditCoffee(editCoffeeId)}>Save Changes</Button>

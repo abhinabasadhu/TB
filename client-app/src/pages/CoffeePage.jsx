@@ -3,12 +3,14 @@ import '../styles/Coffee.scss';
 import CoffeeTableComponent from '../components/specific/CoffeeTable';
 import { fetchAllCoffee, fetchIngredientData } from '../api/apiClient';
 
+// Admin Coffee Page
 const CoffeePage = () => {
     const [data, setData] = useState(null);
     const [ingredientsData, setIngredientsData] = useState(null);
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);
 
+    // trigger to fecth the coffe data and ingredient data to pass it the table component
     useEffect(() => {
         const fetchData = async () => {
             try {

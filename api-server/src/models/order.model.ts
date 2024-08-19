@@ -1,33 +1,35 @@
 import { Schema, model, Document } from "mongoose";
-
+// Enum for order status 
 export enum OrderStatus {
   PENDING = "pending",
   COMPLETED = "completed",
 }
 
+// Interface for order addons
 export interface IOrderSubItem extends Document {
-  addOn: Schema.Types.ObjectId; // addoningredient
-  quantity: number; //Quantity
-  price: number; // price
+  addOn: Schema.Types.ObjectId; 
+  quantity: number; 
+  price: number; 
 }
 
+// Interface for order items/coffees
 export interface IOrderItem extends Document {
-  coffee: Schema.Types.ObjectId; // Coffee product
-  quantity: number; // Quantity of the coffee product
-  price: number; // price
-  addOns: IOrderSubItem[]; // List of AddOns in the order
+  coffee: Schema.Types.ObjectId; 
+  quantity: number; 
+  price: number; 
+  addOns: IOrderSubItem[]; 
 }
 
 // Interface for orders
 export interface IOrder extends Document {
-  orderId: string; // Identifiable order number for customers
-  customerName: string; // Customer detail
-  status: OrderStatus; // Pending or completed
-  total: number; // Total amount of the order
-  items: IOrderItem[]; // List of items in the order
+  orderId: string;
+  customerName: string;
+  status: OrderStatus; 
+  total: number; 
+  items: IOrderItem[]; 
 }
 
-// Define the schema for orders
+// schema for orders
 const orderSchema = new Schema<IOrder>(
   {
     orderId: { type: String, required: true, unique: true },

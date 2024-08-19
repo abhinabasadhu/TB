@@ -6,44 +6,39 @@ import CoffeeCard from '../components/specific/CoffeeCard';
 import Button from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
-const CoffeeOptionspage = () => {
+// Main Menu where user can choose coffee and add to basket
+const MenuPage = () => {
   const nav = useNavigate();
-  const [data, setData] = useState([]);
+
+  const [coffeeData, setCoffeeData] = useState([]);
   const [ingredientData, setIngredientData] = useState([]);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [selectedCoffee, setSelectedCoffee] = useState(null);
+
   const [itemsForCheckoutBasket, setItemsForCheckoutBasket] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+  
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [customizedPrice, setCustomisedPrice] = useState(null);
   const [proceedToCheckout, setProceedToCheckout] = useState(false);
 
-
+  // trigger to get all the coffees present in the db 
   useEffect(() => {
-    const fetchDataFromApi = async () => {
+    const fecthApiData = async() => {
       try {
-        const result = await fetchIngredientData();
-        setIngredientData(result);
-      } catch (err) {
+        const [ingredientData, coffeeData] = await Promise.all([fetchIngredientData(), fetchAllCoffee()]);
+        setIngredientData(ingredientData);
+        setCoffeeData(coffeeData);
+      } catch (err) { 
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    };
-    const fetchCoffeeDataFromApi = async () => {
-      try {
-        const result = await fetchAllCoffee();
-        setData(result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDataFromApi();
-    fetchCoffeeDataFromApi();
+    }
+    fecthApiData();
   }, []);
 
   const handleCheckboxChange = (ingredientId) => {    
@@ -54,8 +49,9 @@ const CoffeeOptionspage = () => {
     );
   };
 
+  // get the coffee by id adds the addons and moves it to checkout
   const handleSave = (id) => {
-    const coffee = data.find(item => item._id === id);
+    const coffee = coffeeData.find(item => item._id === id);
 
     let ingredients = []
 
@@ -68,13 +64,14 @@ const CoffeeOptionspage = () => {
     return;
   }
 
+  // opens up the customization dialog 
   const handleCustomize = (coffeeId) => {
     setSelectedCoffee(coffeeId);
     setDialogOpen(true);
   };
-
+  
+  // revise the price for extra items.
   useEffect(()=>{
-    // revise the price for extra items.
     let total = 0;
     for (const id of selectedIngredients) {
         let item = ingredientData.find(item => item._id === id);
@@ -86,9 +83,11 @@ const CoffeeOptionspage = () => {
   const handleAddToCheckout = (coffee, quantity, addOns=[]) => {
     // Create a unique key for each item based on its customization
     const customizationString = JSON.stringify(addOns);
+    
+    // Note: we are creating an uniquekey there can be times customer wants orginal as well as customised version of the coffee
     const uniqueKey = `${coffee._id}_${customizationString}`;
 
-    // Clone the coffee object and add the quantity, customization, and unique key
+    // Clone the coffee object and add the quantity, customization, unique key and customised price
     let coffeeItem;
     if (addOns.length > 0) {
       coffeeItem = {
@@ -103,7 +102,7 @@ const CoffeeOptionspage = () => {
         ...coffee,
         quantity,
         addOns,
-        uniqueKey,
+        uniqueKey
       };
     }
 
@@ -127,6 +126,7 @@ const CoffeeOptionspage = () => {
     setProceedToCheckout(true);
   };
 
+  // trigger to give customer option to continue shopping or exit to checkout
   useEffect(() => {
     if (proceedToCheckout) {
       if (window.confirm('Your Coffee has been saved in Checkout. Do you want to Checkout?')) {
@@ -142,7 +142,7 @@ const CoffeeOptionspage = () => {
   return (
     <div className="menu-page">
       <div className="card-container">
-        {data.map(coffee => (
+        {coffeeData.map(coffee => (
           <CoffeeCard
             key={coffee._id}
             coffee={coffee}
@@ -174,4 +174,4 @@ const CoffeeOptionspage = () => {
   );
 };
 
-export default CoffeeOptionspage;
+export default MenuPage;

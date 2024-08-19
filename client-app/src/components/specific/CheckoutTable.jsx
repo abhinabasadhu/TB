@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/CheckoutTable.scss';
 
+// component to display the checkout table with coffees
 const CheckoutTableComponent = ({ items }) => {
+
     const [totalAmount, setTotalAmount] = useState(0);
 
+    // triggered to display the total price 
     useEffect(() => {
         let total = 0;
         for (const item of items) {
@@ -41,7 +44,7 @@ const CheckoutTableComponent = ({ items }) => {
                             <td>{row.addOns.length > 0 ? 'Yes' : 'No'}</td>
                             <td>{row.quantity}</td>
                             <td>£{row.price.toFixed(2)}</td>
-                            <td>£{row.customizedPrice ? row.customizedPrice.toFixed(2) : 0}</td>
+                            <td>£{row.customizedPrice}</td>
                         </tr>
                     ))}
                     <tr>

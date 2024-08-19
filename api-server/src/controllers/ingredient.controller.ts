@@ -14,7 +14,7 @@ export async function getIngredient(req: Request, res: Response) {
 }
 // create a ingredient
 export async function createIngredient(req: Request, res: Response) {
-    const {name, quantity, price} = req.body.data;
+    const {name, quantity, price} = req.body;
 
     if (!name || !quantity.amount || !quantity.unit || !price) {
         res.status(400).send({
@@ -40,7 +40,7 @@ export async function editIngredient(req: Request, res: Response) {
         return;
     }
 
-    const {name, quantity, price} = req.body.data;
+    const {name, quantity, price} = req.body;
 
     if (name) {
         ingredient.name = name;

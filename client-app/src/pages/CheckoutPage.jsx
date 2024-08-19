@@ -6,18 +6,22 @@ import Button from '../components/common/Button';
 import { placeOrder } from '../api/apiClient';
 import Input from '../components/common/Input';
 
+// Checkout Page
 const CheckoutPage = () => {
   const nav = useNavigate();
   const location = useLocation();
+  
   const [items, setItems] = useState([]);
   const [customerName, setCustomerName] = useState('');
 
+  // trigger to set the items 
   useEffect(() => {
     if (location.state && location.state.itemsForCheckoutBasket) {
       setItems(location.state.itemsForCheckoutBasket);
     }
   }, [location.state]);
 
+  // for empty checkout 
   if (items.length === 0) {
     return (
       <div className="checkout-page">
@@ -26,6 +30,7 @@ const CheckoutPage = () => {
     );
   }
 
+  // api call to create the order
   const handleOrder = async () => {
     if (!customerName) {
       alert('Please Enter Customer Name');

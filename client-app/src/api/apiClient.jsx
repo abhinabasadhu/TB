@@ -1,3 +1,5 @@
+// all api calls to the db
+
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080';
@@ -8,6 +10,7 @@ export const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// get all the ingredients
 export const fetchIngredientData = async () => {
   try {
     const response = await apiClient.get('/ingredient/');
@@ -18,6 +21,7 @@ export const fetchIngredientData = async () => {
   }
 };
 
+// create new coffee
 export const saveNewCoffee = async (selectedIngredients, coffeeName, ori) => {
   try {
     const response = await apiClient.post('/product/', {
@@ -31,6 +35,7 @@ export const saveNewCoffee = async (selectedIngredients, coffeeName, ori) => {
   }
 };
 
+// get all coffees
 export const fetchAllCoffee = async () => {
   try {
     const response = await apiClient.get('/product/');
@@ -41,9 +46,10 @@ export const fetchAllCoffee = async () => {
   }
 }
 
+// create order
 export const placeOrder = async (data) => {
   try {
-    const response = await apiClient.post('/order/', { data });
+    const response = await apiClient.post('/order/', data );
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -51,9 +57,10 @@ export const placeOrder = async (data) => {
   }
 }
 
+// save ingredient
 export const saveIngredient = async(data) => {
   try {
-    const response = await apiClient.post('/ingredient/', { data });
+    const response = await apiClient.post('/ingredient/',  data );
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -61,9 +68,10 @@ export const saveIngredient = async(data) => {
   }
 }
 
+// edit ingredient
 export const editIngredient = async(id, data) => {
   try {
-    const response = await apiClient.post(`/ingredient/${id}`, { data });
+    const response = await apiClient.post(`/ingredient/${id}`, data );
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -71,6 +79,7 @@ export const editIngredient = async(id, data) => {
   }
 }
 
+// delete ingredient
 export const deleteIngredient = async(id) => {
   try {
     const response = await apiClient.delete(`/ingredient/${id}`);
@@ -81,6 +90,7 @@ export const deleteIngredient = async(id) => {
   }
 }
 
+// delete coffee
 export const deleteCoffee = async(id) => {
   try {
     const response = await apiClient.delete(`/product/${id}`);
@@ -91,6 +101,7 @@ export const deleteCoffee = async(id) => {
   }
 }
 
+// edit coffee
 export const editCoffee = async(id, editCoffeeIngredients, editCoffeeName) => {
   try {
     const response = await apiClient.post(`/product/${id}`, { 
