@@ -4,14 +4,17 @@ import { Product } from "../models/product.model";
 
 // list all ingredients
 export async function getAllIngredients(req: Request, res: Response) {
+    
     const ingredients = await Ingredient.find({});
     res.send(ingredients);
 }
+
 // get a ingredient
 export async function getIngredient(req: Request, res: Response) {
     const ingredient = await Ingredient.findById(req.params.id);
     res.send(ingredient);
 }
+
 // create a ingredient
 export async function createIngredient(req: Request, res: Response) {
     const {name, quantity, price} = req.body;
@@ -31,6 +34,7 @@ export async function createIngredient(req: Request, res: Response) {
     );
     res.send(ingredient);
 }
+
 // edit a ingredient
 export async function editIngredient(req: Request, res: Response) {
     const ingredient = await Ingredient.findById(req.params.id);
@@ -55,6 +59,7 @@ export async function editIngredient(req: Request, res: Response) {
     
     return res.send(ingredient);
 }
+
 // delete a ingredient
 export async function deleteIngredient(req: Request, res: Response) {
     const ingredient = await Ingredient.findById(req.params.id);

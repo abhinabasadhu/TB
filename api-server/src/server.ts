@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(router);
+app.use('/api', router);
 
 // an asynchronous function to start the server and connect to MongoDB
 async function startServer() {

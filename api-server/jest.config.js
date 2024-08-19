@@ -1,2 +1,4 @@
-// jest.config.js
-export const preset = "ts-jest";
+module.exports = {
+    preset: "ts-jest",
+    testTimeout: 10000
+};

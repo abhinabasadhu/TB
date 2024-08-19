@@ -13,7 +13,7 @@
     }
   
     .card {
-      background-color: #fff;
+      background-color: $white-color;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
@@ -35,12 +35,12 @@
   
     .options {
       background-color: $third-color;
-      color: #fff;
+      color: $white-color;
     }
   
     .create-own {
       background-color: $secondary-color;
-      color: #fff;
+      color: $white-color;
     }
 }
   

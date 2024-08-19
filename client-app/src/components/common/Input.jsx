@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/Input.scss';
 
 const Input = ({ type = 'text', value, onChange, placeholder, id, min, max, step, className, ...props }) => {
-  // generic input
+  // generic input component
   return (
     <div className={`input-container`}>
       <input
