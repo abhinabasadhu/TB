@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './../styles/Menu.scss';
-import { fetchAllCoffee, fetchIngredientData } from '../api/apiClient';
+import { fetchAllCoffee, fetchIngredientData, filterCoffee } from '../api/apiClient';
 import Dialog from '../components/common/Dialog';
 import CoffeeCard from '../components/specific/CoffeeCard';
 import Button from '../components/common/Button';
@@ -12,27 +12,27 @@ const MenuPage = () => {
 
   const [coffeeData, setCoffeeData] = useState([]);
   const [ingredientData, setIngredientData] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [selectedCoffee, setSelectedCoffee] = useState(null);
 
   const [itemsForCheckoutBasket, setItemsForCheckoutBasket] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
-  
+
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [customizedPrice, setCustomisedPrice] = useState(null);
   const [proceedToCheckout, setProceedToCheckout] = useState(false);
 
   // trigger to get all the coffees present in the db 
   useEffect(() => {
-    const fecthApiData = async() => {
+    const fecthApiData = async () => {
       try {
         const [ingredientData, coffeeData] = await Promise.all([fetchIngredientData(), fetchAllCoffee()]);
         setIngredientData(ingredientData);
         setCoffeeData(coffeeData);
-      } catch (err) { 
+      } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -41,7 +41,7 @@ const MenuPage = () => {
     fecthApiData();
   }, []);
 
-  const handleCheckboxChange = (ingredientId) => {    
+  const handleCheckboxChange = (ingredientId) => {
     setSelectedIngredients((prevSelected) =>
       prevSelected.includes(ingredientId)
         ? prevSelected.filter(id => id !== ingredientId)
@@ -69,21 +69,21 @@ const MenuPage = () => {
     setSelectedCoffee(coffeeId);
     setDialogOpen(true);
   };
-  
+
   // revise the price for extra items.
-  useEffect(()=>{
+  useEffect(() => {
     let total = 0;
     for (const id of selectedIngredients) {
-        let item = ingredientData.find(item => item._id === id);
-        total = total + item.price
+      let item = ingredientData.find(item => item._id === id);
+      total = total + item.price
     }
     setCustomisedPrice(total.toFixed(2));
-  },[selectedIngredients.length])
+  }, [selectedIngredients.length])
 
-  const handleAddToCheckout = (coffee, quantity, addOns=[]) => {
+  const handleAddToCheckout = (coffee, quantity, addOns = []) => {
     // Create a unique key for each item based on its customization
     const customizationString = JSON.stringify(addOns);
-    
+
     // Note: we are creating an uniquekey there can be times customer wants orginal as well as customised version of the coffee
     const uniqueKey = `${coffee._id}_${customizationString}`;
 
@@ -106,7 +106,6 @@ const MenuPage = () => {
       };
     }
 
-
     setItemsForCheckoutBasket((prevItems) => {
       // Check if an item with the same unique key already exists
       const exists = prevItems.some(item => item.uniqueKey === coffeeItem.uniqueKey);
@@ -126,13 +125,33 @@ const MenuPage = () => {
     setProceedToCheckout(true);
   };
 
+  
+  const handleFilterCoffees = async(key)  => {
+    let filterKey;
+    if (key === '0') {
+      filterKey = 'default';
+    } else if (key === '1') {
+      filterKey = 'system';
+    } else {
+      filterKey = 'third_party';
+    }
+    try {
+      const response = await filterCoffee(filterKey);
+      setCoffeeData(response);
+    } catch(e) {
+      console.log(e);
+    }   
+  };
+
+
   // trigger to give customer option to continue shopping or exit to checkout
   useEffect(() => {
     if (proceedToCheckout) {
       if (window.confirm('Your Coffee has been saved in Checkout. Do you want to Checkout?')) {
         nav('/checkout', { state: { itemsForCheckoutBasket } });
       }
-      setProceedToCheckout(false); // Reset flag
+      // Reset flag
+      setProceedToCheckout(false); 
     }
   }, [proceedToCheckout, nav, itemsForCheckoutBasket]);
 
@@ -141,6 +160,11 @@ const MenuPage = () => {
 
   return (
     <div className="menu-page">
+      <select className="custom-select"  onChange={(e) => handleFilterCoffees(e.target.value)}>
+        <option value={0}>Default</option>
+        <option value={1}>System</option>
+        <option value={2}>User</option>
+      </select>
       <div className="card-container">
         {coffeeData.map(coffee => (
           <CoffeeCard

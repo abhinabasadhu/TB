@@ -1,11 +1,24 @@
 import { Request, Response } from "express";
-import { Product } from "../models/product.model";
+import { IProduct, Origin, Product } from "../models/product.model";
 import { Types } from "mongoose";
 import { Ingredient } from "../models/ingredient.model";
 
 // list all products
 export async function getAllProducts(req: Request, res: Response) {
-    const products = await Product.find({});
+    const { filter } = req.query;
+    
+    let products: IProduct[];
+
+    if (filter !== 'default') {
+        products = await Product.find({'origin': filter});
+    } else {
+        products = await Product.find({}); 
+    }
+
+    if (!filter) {
+        products = await Product.find({}); 
+    }
+    
     res.send(products);
 }
 

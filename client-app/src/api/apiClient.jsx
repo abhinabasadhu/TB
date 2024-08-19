@@ -114,3 +114,14 @@ export const editCoffee = async(id, editCoffeeIngredients, editCoffeeName) => {
     throw error;
   }
 }
+
+// filter coffee data 
+export const filterCoffee = async(id) => {
+  try {
+    const response = await apiClient.get(`/product?filter=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
