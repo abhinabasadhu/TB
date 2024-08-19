@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Ingredient } from "../models/ingredient.model";
 import { Product } from "../models/product.model";
-import { ObjectId, Types } from "mongoose";
 
 // list all ingredients
 export async function getAllIngredients(req: Request, res: Response) {

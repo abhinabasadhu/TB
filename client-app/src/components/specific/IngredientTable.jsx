@@ -125,7 +125,7 @@ const IngredientTableComponent = ({ data }) => {
           {ingredientData.map((row) => (
             <tr key={row._id}>
               <td>{row.name}</td>
-              <td>{row.price}</td>
+              <td>£{row.price}</td>
               <td>
                 {Object.entries(row.quantity).map(([key, value]) => (
                   <li key={key}>

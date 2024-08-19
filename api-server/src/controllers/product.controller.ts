@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Origin, Product } from "../models/product.model";
+import { Product } from "../models/product.model";
 import { Types } from "mongoose";
 import { Ingredient } from "../models/ingredient.model";
 
@@ -75,7 +75,6 @@ export async function editProduct(req: Request, res: Response) {
     if (req.body.name) {
         product.name = req.body.name;
     }
-    console.info('here');
 
     if (req.body.ingredients) {
         product.ingredients = req.body.ingredients;
@@ -96,7 +95,6 @@ export async function editProduct(req: Request, res: Response) {
         product.price = total;
 
     }
-    console.info(product);
 
     await product.save();
     

@@ -113,7 +113,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
           {cData.map((row) => (
             <tr key={row.id}>
               <td>{row.name}</td>
-              <td>{(row.price.toFixed(2))}</td>
+              <td>£{(row.price.toFixed(2))}</td>
               <td>{Object.entries(row.characteristics).map(([key, value]) => (
                 <ul>
                   <li>

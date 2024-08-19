@@ -19,7 +19,6 @@ const CoffeeCard = ({ coffee, onAddToCheckout, onCustomize }) => {
     <div className="coffee-card">
       <h2>{coffee.name}</h2>
       <p>Price: £{(coffee.price).toFixed(2)}</p>
-      <p>Origin: {coffee.origin}</p>
       <div className="coffee-characteristics">
         <h3>Characteristics:</h3>
         <ul>

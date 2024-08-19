@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product.model";
-import { IOrderSubItem, IOrderItem, Order } from "../models/order.model";
-import { Types } from "mongoose";
+import { Order } from "../models/order.model";
 import { Ingredient } from "../models/ingredient.model";
 
 // get all orders

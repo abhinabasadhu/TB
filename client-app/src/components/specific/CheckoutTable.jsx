@@ -40,8 +40,8 @@ const CheckoutTableComponent = ({ items }) => {
                             ))}</td>
                             <td>{row.addOns.length > 0 ? 'Yes' : 'No'}</td>
                             <td>{row.quantity}</td>
-                            <td>£{row.price}</td>
-                            <td>£{row.customizedPrice ? row.customizedPrice : 0}</td>
+                            <td>£{row.price.toFixed(2)}</td>
+                            <td>£{row.customizedPrice ? row.customizedPrice.toFixed(2) : 0}</td>
                         </tr>
                     ))}
                     <tr>
