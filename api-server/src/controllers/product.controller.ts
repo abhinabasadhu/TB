@@ -5,7 +5,7 @@ import { Ingredient } from "../models/ingredient.model";
 
 // list all products
 export async function getAllProducts(req: Request, res: Response) {
-    const { filter } = req.query;
+    const { filter } = req.query || {};
 
     let products: IProduct[];
 
