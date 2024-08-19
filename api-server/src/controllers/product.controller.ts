@@ -6,17 +6,13 @@ import { Ingredient } from "../models/ingredient.model";
 // list all products
 export async function getAllProducts(req: Request, res: Response) {
     const { filter } = req.query;
-    
+
     let products: IProduct[];
-
-    if (filter !== 'default') {
-        products = await Product.find({'origin': filter});
+    
+    if (filter && filter !== 'default') {
+        products = await Product.find({ origin: filter });
     } else {
-        products = await Product.find({}); 
-    }
-
-    if (!filter) {
-        products = await Product.find({}); 
+        products = await Product.find({});
     }
     
     res.send(products);
