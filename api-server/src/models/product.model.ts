@@ -26,7 +26,7 @@ const productSchema = new Schema(
       type: String,
       enum: [Origin.SYSTEM, Origin.THIRD_PARTY],
       default: Origin.SYSTEM,
-    }, 
+    },
     price: { type: Number, required: true },
     ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
     addOns: [{ type: Schema.Types.ObjectId, ref: "AddOn" }],

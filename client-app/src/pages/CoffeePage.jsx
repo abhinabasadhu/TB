@@ -7,7 +7,7 @@ import { fetchAllCoffee, fetchIngredientData } from '../api/apiClient';
 const CoffeePage = () => {
     const [data, setData] = useState(null);
     const [ingredientsData, setIngredientsData] = useState(null);
-    const [loading, setLoading] = useState(true);  
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // trigger to fecth the coffe data and ingredient data to pass it the table component
@@ -17,7 +17,7 @@ const CoffeePage = () => {
                 const [coffeeResult, ingredientsResult] = await Promise.all([fetchAllCoffee(), fetchIngredientData()]);
                 setData(coffeeResult);
                 setIngredientsData(ingredientsResult);
-    
+
                 if (!ingredientsResult || ingredientsResult.length === 0) {
                     alert('Please create ingredients from menu that can be added to a coffee first');
                 }
@@ -28,7 +28,7 @@ const CoffeePage = () => {
             }
         };
         fetchData();
-    }, []); 
+    }, []);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;

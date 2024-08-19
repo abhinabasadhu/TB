@@ -75,7 +75,7 @@ const CoffeeTableComponent = ({ coffeeData, ingredientData }) => {
       const newData = cData.filter((item) => item._id !== response._id);
       newData.push(response);
       setCdata(newData);
-    } catch(e){
+    } catch (e) {
       console.log(e);
     } finally {
       setEditCoffeeIngredients([]);

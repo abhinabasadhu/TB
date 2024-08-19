@@ -125,8 +125,8 @@ const MenuPage = () => {
     setProceedToCheckout(true);
   };
 
-  
-  const handleFilterCoffees = async(key)  => {
+
+  const handleFilterCoffees = async (key) => {
     let filterKey;
     if (key === '0') {
       filterKey = 'default';
@@ -138,9 +138,9 @@ const MenuPage = () => {
     try {
       const response = await filterCoffee(filterKey);
       setCoffeeData(response);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
-    }   
+    }
   };
 
 
@@ -151,7 +151,7 @@ const MenuPage = () => {
         nav('/checkout', { state: { itemsForCheckoutBasket } });
       }
       // Reset flag
-      setProceedToCheckout(false); 
+      setProceedToCheckout(false);
     }
   }, [proceedToCheckout, nav, itemsForCheckoutBasket]);
 
@@ -160,7 +160,7 @@ const MenuPage = () => {
 
   return (
     <div className="menu-page">
-      <select className="custom-select"  onChange={(e) => handleFilterCoffees(e.target.value)}>
+      <select className="custom-select" onChange={(e) => handleFilterCoffees(e.target.value)}>
         <option value={0}>Default</option>
         <option value={1}>System</option>
         <option value={2}>User</option>

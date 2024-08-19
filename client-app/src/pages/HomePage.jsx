@@ -14,12 +14,12 @@ const HomePage = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const [data, setData] = useState(null);
-  const [selectedIngredients, setSelectedIngredients] = useState([]); 
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [coffeeName, setCoffeeName] = useState('');
-  
+
   // trigger to fetch ingredients for the new coffee dialog for the user 
   useEffect(() => {
     const fetchDataFromApi = async () => {

@@ -117,7 +117,7 @@ export async function createOrder(req: Request, res: Response) {
 }
 
 // complete a order
-export async function completeOrder(req: Request, res: Response) {}
+export async function completeOrder(req: Request, res: Response) { }
 
 // delete a order
 export async function deleteOrder(req: Request, res: Response) {

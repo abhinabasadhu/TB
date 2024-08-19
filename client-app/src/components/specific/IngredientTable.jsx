@@ -13,7 +13,7 @@ const IngredientTableComponent = ({ data }) => {
   // state to render the dialogs when required
   const [openAddIngredientDailog, setOpenAddIngredientDailog] = useState(false);
   const [openEditIngredientDailog, setOpenEditIngredientDailog] = useState(false);
-  
+
   // captures values on new creation
   const [ingredientName, setIngredientName] = useState('');
   const [ingredientAmount, setIngredientAmount] = useState('');
@@ -100,16 +100,16 @@ const IngredientTableComponent = ({ data }) => {
   // delete handler to delete an ingredient
   const handleDeleteIngredient = async (id) => {
     if (window.confirm('Are you sure you want to delete this ingredient ?')) {
-        try {
-          const response = await deleteIngredient(id);
-          const newData = data.filter((item) => item._id !== response._id);
-          setIngredientData(newData);
-        } catch (e) {
-          console.log(e);
-          alert(e.response.data.message);
-        } finally {
-          setOpenAddIngredientDailog(false);
-        }
+      try {
+        const response = await deleteIngredient(id);
+        const newData = data.filter((item) => item._id !== response._id);
+        setIngredientData(newData);
+      } catch (e) {
+        console.log(e);
+        alert(e.response.data.message);
+      } finally {
+        setOpenAddIngredientDailog(false);
+      }
     }
   };
 

@@ -31,7 +31,7 @@ const IngredientPage = () => {
 
     return (
         <div className="ingredient-page">
-            <IngredientTableComponent data={data}/>
+            <IngredientTableComponent data={data} />
         </div>
     );
 };

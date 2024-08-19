@@ -7,26 +7,26 @@ export enum OrderStatus {
 
 // Interface for order addons
 export interface IOrderSubItem extends Document {
-  addOn: Schema.Types.ObjectId; 
-  quantity: number; 
-  price: number; 
+  addOn: Schema.Types.ObjectId;
+  quantity: number;
+  price: number;
 }
 
 // Interface for order items/coffees
 export interface IOrderItem extends Document {
-  coffee: Schema.Types.ObjectId; 
-  quantity: number; 
-  price: number; 
-  addOns: IOrderSubItem[]; 
+  coffee: Schema.Types.ObjectId;
+  quantity: number;
+  price: number;
+  addOns: IOrderSubItem[];
 }
 
 // Interface for orders
 export interface IOrder extends Document {
   orderId: string;
   customerName: string;
-  status: OrderStatus; 
-  total: number; 
-  items: IOrderItem[]; 
+  status: OrderStatus;
+  total: number;
+  items: IOrderItem[];
 }
 
 // schema for orders

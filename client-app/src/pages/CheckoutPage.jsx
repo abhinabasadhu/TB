@@ -10,7 +10,7 @@ import Input from '../components/common/Input';
 const CheckoutPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  
+
   const [items, setItems] = useState([]);
   const [customerName, setCustomerName] = useState('');
 
@@ -36,14 +36,14 @@ const CheckoutPage = () => {
       alert('Please Enter Customer Name');
       return;
     }
-  
+
     try {
       await placeOrder({
         customerName: customerName,
         items: items
       });
       alert('Your order has been successfully created!');
-      nav('/menu'); 
+      nav('/menu');
     } catch (err) {
       console.log(`Error placing order: ${err.message}`);
     }
@@ -52,7 +52,7 @@ const CheckoutPage = () => {
   return (
     <div className="checkout-page">
       <CheckoutTableComponent items={items} />
-      <Input placeholder="Customer Name" value={customerName} onChange={(e) => setCustomerName(e.target.value)}/>
+      <Input placeholder="Customer Name" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
       <Button onClick={handleOrder}>Place Order</Button>
     </div>
   );
