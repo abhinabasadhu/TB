@@ -1,6 +1,6 @@
-import mongoose = require("mongoose");
-import express = require("express");
-import bodyParser = require("body-parser");
+import mongoose from "mongoose";
+import express from "express";
+import bodyParser from "body-parser";
 import router from "./routes/index";
 import * as dotenv from 'dotenv';
 import cors from 'cors';
